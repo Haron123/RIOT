@@ -1787,6 +1787,7 @@ static netstats_nb_result_t _res_to_nb_result(int res)
     return NETSTATS_NB_BUSY;
 }
 
+bool dropping_packet = false;
 static void _tx_done(gnrc_netif_t *netif, gnrc_pktsnip_t *pkt,
                      gnrc_pktsnip_t *tx_sync, int res, bool push_back)
 {
@@ -1846,6 +1847,7 @@ static void _tx_done(gnrc_netif_t *netif, gnrc_pktsnip_t *pkt,
         }
         else {
             LOG_ERROR("gnrc_netif: can't queue packet for sending, drop it\n");
+            dropping_packet = true;
             /* If we got here, it means the device was busy and the pkt queue
              * was full. The packet should be dropped here anyway */
             gnrc_pktbuf_release_error(pkt, ENOMEM);

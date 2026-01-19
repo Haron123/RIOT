@@ -58,11 +58,11 @@ extern "C" {
 
 #define BMX280_PARAM_MISC                   \
         .t_sb = BMX280_SB_0_5,              \
-        .filter = BMX280_FILTER_OFF,        \
-        .run_mode = BMX280_MODE_FORCED,     \
-        .temp_oversample = BMX280_OSRS_X1,  \
-        .press_oversample = BMX280_OSRS_X1, \
-        .humid_oversample = BMX280_OSRS_X1, \
+        .filter = BMX280_FILTER_16,        \
+        .run_mode = BMX280_MODE_NORMAL,     \
+        .temp_oversample = BMX280_OSRS_X4,  \
+        .press_oversample = BMX280_OSRS_X16, \
+        .humid_oversample = BMX280_OSRS_X4, \
 
 /* Defaults for Weather Monitoring */
 #ifndef BMX280_PARAMS

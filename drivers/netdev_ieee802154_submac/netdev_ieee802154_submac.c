@@ -258,6 +258,10 @@ static void _isr(netdev_t *netdev)
         }
 
         DEBUG("IEEE802154 submac: _isr_flags_get_clear(): pending flags: %"PRIu32"\n", flags);
+        if(flags)
+        {
+            printf("0x%lX\n", flags);
+        }
         assert(!flags);
         break;
 
@@ -340,6 +344,10 @@ static void submac_tx_done(ieee802154_submac_t *submac, int status,
     if (info) {
         netdev_submac->retrans = info->retrans;
     }
+    if(netdev_submac->dispatch)
+    {
+        printf("C\n"); 
+    }
     assert(!netdev_submac->dispatch);
     netdev_submac->dispatch = true;
     netdev_submac->ev = NETDEV_EVENT_TX_COMPLETE;
@@ -364,6 +372,10 @@ static void submac_rx_done(ieee802154_submac_t *submac)
     netdev_ieee802154_submac_t *netdev_submac = container_of(submac,
                                                              netdev_ieee802154_submac_t,
                                                              submac);
+    if(netdev_submac->dispatch)
+    {
+        printf("A\n");
+    }                      
     assert(!netdev_submac->dispatch);
     netdev_submac->dispatch = true;
     DEBUG("IEEE802154 submac: NETDEV_EVENT_RX_COMPLETE\n");

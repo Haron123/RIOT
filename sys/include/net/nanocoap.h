@@ -515,7 +515,7 @@ static inline unsigned coap_get_code_raw(const coap_pkt_t *pkt)
  */
 static inline coap_method_t coap_get_method(const coap_pkt_t *pkt)
 {
-    return pkt->hdr->code;
+    return (coap_method_t)pkt->hdr->code;
 }
 
 /**
@@ -724,7 +724,7 @@ static inline void coap_hdr_set_type(coap_hdr_t *hdr, unsigned type)
  */
 static inline size_t coap_hdr_get_token_len(const coap_hdr_t *hdr)
 {
-    const uint8_t *buf = (const void *)hdr;
+    const uint8_t *buf = (const uint8_t*)hdr;
     /* Regarding use unnamed magic numbers 13 and 269:
      * - If token length is < 13 it fits into TKL field (4 bit)
      * - If token length is < 269 it fits into 8-bit extended TKL field
@@ -764,7 +764,7 @@ static inline size_t coap_hdr_get_token_len(const coap_hdr_t *hdr)
  */
 static inline const void * coap_hdr_get_token(const coap_hdr_t *hdr)
 {
-    uint8_t *token = (void *)hdr;
+    uint8_t *token = (uint8_t*)hdr;
     token += sizeof(*hdr) + coap_hdr_tkl_ext_len(hdr);
     return token;
 }

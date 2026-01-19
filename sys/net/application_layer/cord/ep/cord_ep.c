@@ -29,6 +29,7 @@
 #include "net/cord/ep.h"
 #include "net/cord/common.h"
 #include "net/cord/config.h"
+#include "fmt.h"
 
 #ifdef MODULE_CORD_EP_STANDALONE
 #include "net/cord/ep_standalone.h"
@@ -226,6 +227,14 @@ static int _discover_internal(const sock_udp_ep_t *remote,
     coap_hdr_set_type(pkt.hdr, COAP_TYPE_CON);
     coap_opt_add_uri_query(&pkt, "rt", "core.rd");
     size_t pkt_len = coap_opt_finish(&pkt, COAP_OPT_FINISH_NONE);
+
+     // Print buf
+    for(unsigned int i = 0; i < pkt_len; i++)
+    {
+        printf("0x%X ", buf[i]);
+    }
+    printf("\n");
+
     res = gcoap_req_send(buf, pkt_len, remote, NULL, _on_discover, NULL, GCOAP_SOCKET_TYPE_UNDEF);
     if (res <= 0) {
         return CORD_EP_ERR;
@@ -294,7 +303,12 @@ int cord_ep_register(const sock_udp_ep_t *remote, const char *regif)
         retval = CORD_EP_ERR;
         goto end;
     }
+
     pkt_len += res;
+
+    //pkt_len += fmt_str((char*)pkt.payload, "</ready_to_duel1>,</ready_to_duel2>,</ready_to_duel3>,</ready_to_duel4>");
+
+    printf("Sending %s\n", pkt.payload);
 
     /* send out the request */
     res = gcoap_req_send(buf, pkt_len, remote, NULL, _on_register, NULL, GCOAP_SOCKET_TYPE_UNDEF);
@@ -316,6 +330,7 @@ end:
 #endif
 
     mutex_unlock(&_mutex);
+    printf("end\n");
     return retval;
 }
 

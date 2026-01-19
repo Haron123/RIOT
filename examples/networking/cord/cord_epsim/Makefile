@@ -2,7 +2,7 @@
 APPLICATION = cord_epsim
 
 # If no BOARD is found in the environment, use this default:
-BOARD ?= native
+BOARD = adafruit-feather-nrf52840-sense
 
 # This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../../../..
@@ -27,7 +27,7 @@ DEVELHELP ?= 1
 # the RD_ADDR environment variable. Per default, this value is set to the
 # loopback address for enabling the build tests to successfully build this
 # example.
-RD_ADDR ?= \"[affe::1]\"
+RD_ADDR ?= \"[2001:67c:254:b0b2:affe:3000:0:1]\"
 CFLAGS += -DRD_ADDR=$(RD_ADDR)
 
 include $(RIOTBASE)/Makefile.include
@@ -40,3 +40,23 @@ RD_LT ?= 60
 ifndef CONFIG_CORD_LT
 CFLAGS += -DCONFIG_CORD_LT=$(RD_LT)
 endif
+
+term_custom:
+	$(RIOTBASE)/dist/tools/pyterm/pyterm -p "/dev/$(PORT)" -b "115200" -ln "/tmp/pyterm-haron"
+
+burn:
+	# Create UF2
+	$(RIOTBASE)/dist/tools/uf2/uf2conv.py -f 0xADA52840 ./bin/adafruit-feather-nrf52840-sense/cord_epsim.hex --base 0x26000 -o ./programm.uf2
+
+	# Create UF2 as ZIP
+	adafruit-nrfutil dfu genpkg --dev-type 0x0052 --application ./bin/adafruit-feather-nrf52840-sense/cord_epsim.hex cord_epsim.zip
+
+	# Upload
+	adafruit-nrfutil dfu serial --package cord_epsim.zip -p /dev/$(PORT) -b 1152000
+
+node1:
+	@echo "Node 1 selected"
+	$(MAKE) clean
+	$(MAKE) -j12 all CFLAGS+=" -DMYID=1 "
+	$(MAKE) burn PORT=ttyACM0
+	$(MAKE) term_custom PORT=ttyACM0

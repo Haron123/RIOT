@@ -111,6 +111,13 @@ static int _cord_ep_handler(int argc, char **argv)
             printf("error: unable to parse address\n");
             return 1;
         }
+        printf("Address received: %s \n", argv[2]);
+        for(unsigned int i = 0; i < sizeof(remote.addr.ipv6); i++)
+        {
+            printf("%X ", remote.addr.ipv6[i]);
+        }
+        printf("\n%d\n", remote.port);
+
         if (cord_ep_discover_regif(&remote, regif, sizeof(regif)) == CORD_EP_OK) {
             printf("the registration interface is '%s'\n", regif);
         }

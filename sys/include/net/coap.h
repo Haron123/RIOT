@@ -564,7 +564,7 @@ typedef enum {
  * (@ref CONFIG_COAP_ACK_TIMEOUT_MS * @ref CONFIG_COAP_RANDOM_FACTOR_1000 / 1000).
  */
 #ifndef CONFIG_COAP_ACK_TIMEOUT_MS
-#define CONFIG_COAP_ACK_TIMEOUT_MS     (2000)
+#define CONFIG_COAP_ACK_TIMEOUT_MS     (500)
 #endif
 
 /**
@@ -590,7 +590,7 @@ typedef enum {
 
 /** @brief   Maximum number of retransmissions for a confirmable request */
 #ifndef CONFIG_COAP_MAX_RETRANSMIT
-#define CONFIG_COAP_MAX_RETRANSMIT     (4)
+#define CONFIG_COAP_MAX_RETRANSMIT     (6)
 #endif
 /** @} */
 /** @} */

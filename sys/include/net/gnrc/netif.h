@@ -73,6 +73,8 @@
 extern "C" {
 #endif
 
+extern bool dropping_packet;
+
 /**
  * @brief Index of the high priority queue
  */

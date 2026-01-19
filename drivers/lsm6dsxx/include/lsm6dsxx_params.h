@@ -59,6 +59,8 @@ extern "C" {
 #define LSM6DSXX_PARAM_GYRO_FIFO_DEC  (LSM6DSXX_DECIMATION_NO)
 #endif
 
+
+
 #ifndef LSM6DSXX_PARAMS
 #define LSM6DSXX_PARAMS               { .i2c             = LSM6DSXX_PARAM_I2C,          \
                                         .addr            = LSM6DSXX_PARAM_ADDR,         \
